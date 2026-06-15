@@ -2,6 +2,8 @@ package com.financedomain.auth.controller;
 
 import com.financedomain.auth.dto.LoginRequest;
 import com.financedomain.auth.dto.LoginResponse;
+import com.financedomain.auth.exception.BadFormatAuthenticationException;
+import com.financedomain.auth.exception.NullAuthentificationException;
 import com.financedomain.auth.service.AuthService;
 import com.financedomain.auth.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class AuthController {
         try {
             LoginResponse response = authService.login(request);
             return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException e) {
+        } catch (BadFormatAuthenticationException | NullAuthentificationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
