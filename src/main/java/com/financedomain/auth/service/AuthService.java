@@ -2,6 +2,7 @@ package com.financedomain.auth.service;
 
 import com.financedomain.auth.dto.LoginRequest;
 import com.financedomain.auth.dto.LoginResponse;
+import com.financedomain.auth.exception.BadFormatAuthenticationException;
 import com.financedomain.auth.proxy.UserProxy;
 import com.financedomain.auth.proxy.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +46,16 @@ public class AuthService {
 
         if (user == null) {
             System.out.println("=> Utilisateur introuvable en base de données.");
-            throw new IllegalArgumentException("Identifiant ou mot de passe incorrect");
+            throw new BadFormatAuthenticationException("Identifiant ou mot de passe incorrect");
         }
 
         System.out.println("=> Utilisateur trouvé !");
 
         // 3. Vérifier le mot de passe
         boolean isPasswordValid = passwordEncoder.matches(request.getPassword(), user.getPassword());
-        System.out.println("=> Les mots de passe correspondent-ils ? : " + isPasswordValid);
 
         if (!isPasswordValid) {
-            throw new IllegalArgumentException("Identifiant ou mot de passe incorrect");
+            throw new BadFormatAuthenticationException("Identifiant ou mot de passe incorrect");
         }
 
         // 4. Générer le token JWT
