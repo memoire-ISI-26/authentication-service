@@ -1,12 +1,13 @@
 package com.financedomain.auth.proxy;
 
-import com.financedomain.auth.proxy.dto.UserDto;
+import com.financedomain.auth.dto.UserDto;
+import com.financedomain.auth.proxy.fallback.UserProxyFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "user-service")
+@FeignClient(name = "user-service", fallback = UserProxyFallback.class)
 public interface UserProxy {
 
     @GetMapping("/users/admin/username/{username}")
