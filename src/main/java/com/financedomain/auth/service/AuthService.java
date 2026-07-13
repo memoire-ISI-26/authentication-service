@@ -4,7 +4,7 @@ import com.financedomain.auth.dto.LoginRequest;
 import com.financedomain.auth.dto.LoginResponse;
 import com.financedomain.auth.exception.BadFormatAuthenticationException;
 import com.financedomain.auth.proxy.UserProxy;
-import com.financedomain.auth.proxy.dto.UserDto;
+import com.financedomain.auth.dto.UserDto;
 import com.financedomain.auth.dto.TrackingEvent;
 import com.financedomain.auth.proxy.TrackingProxy;
 import org.springframework.beans.factory.annotation.Autowired;
