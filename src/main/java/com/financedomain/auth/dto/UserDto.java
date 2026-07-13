@@ -1,4 +1,4 @@
-package com.financedomain.auth.proxy.dto;
+package com.financedomain.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
