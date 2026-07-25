@@ -5,7 +5,6 @@ import com.financedomain.auth.dto.LoginResponse;
 import com.financedomain.auth.exception.BadFormatAuthenticationException;
 import com.financedomain.auth.proxy.UserProxy;
 import com.financedomain.auth.dto.UserDto;
-import com.financedomain.auth.dto.TrackingEvent;
 import com.financedomain.auth.proxy.TrackingProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,21 +64,6 @@ public class AuthService {
 
         // 4. Générer le token JWT
         String token = jwtService.generateToken(user.getId(), request.getIdentifier(), user.getRole());
-
-        // Envoi résilient de l'événement de tracking
-        try {
-            TrackingEvent event = TrackingEvent.builder()
-                    .eventType("LOGIN")
-                    .msisdn(user.getNumber() != null ? user.getNumber() : request.getIdentifier())
-                    .userId(String.valueOf(user.getId()))
-                    .userRole(user.getRole())
-                    .sourceService("authentication-service")
-                    .timestamp(java.time.Instant.now())
-                    .build();
-            trackingProxy.collectEvent(event, "INTERNAL");
-        } catch (Exception e) {
-            System.err.println("Erreur de tracking login: " + e.getMessage());
-        }
 
         // 5. Retourner la réponse
         return LoginResponse.builder()
