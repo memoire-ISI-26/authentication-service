@@ -6,10 +6,12 @@ import com.financedomain.auth.exception.BadFormatAuthenticationException;
 import com.financedomain.auth.proxy.UserProxy;
 import com.financedomain.auth.dto.UserDto;
 import com.financedomain.auth.proxy.TrackingProxy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthService {
 
@@ -26,14 +28,17 @@ public class AuthService {
     private TrackingProxy trackingProxy;
 
     public LoginResponse login(LoginRequest request) {
+        if (request == null || request.getIdentifier() == null || request.getPassword() == null) {
+            throw new BadFormatAuthenticationException("Identifiant et mot de passe sont obligatoires.");
+        }
+
         UserDto user = null;
         
         // 1. Tenter de trouver un admin par username
         try {
             user = userProxy.getAdminByUsername(request.getIdentifier()).getBody();
         } catch (Exception e) {
-            System.err.println("Erreur recherche Admin: " + e.getMessage());
-            e.printStackTrace();
+            log.warn("Recherche Admin pour {}: {}", request.getIdentifier(), e.getMessage());
             // Ignorer, peut-être que c'est un client
         }
 
@@ -42,8 +47,7 @@ public class AuthService {
             try {
                 user = userProxy.getClientByNumber(request.getIdentifier()).getBody();
             } catch (Exception e) {
-                System.err.println("Erreur recherche Client: " + e.getMessage());
-                e.printStackTrace();
+                log.warn("Recherche Client pour {}: {}", request.getIdentifier(), e.getMessage());
                 // Utilisateur introuvable
             }
         }
