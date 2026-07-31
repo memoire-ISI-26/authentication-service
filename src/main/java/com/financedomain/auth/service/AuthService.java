@@ -53,11 +53,11 @@ public class AuthService {
         }
 
         if (user == null) {
-            System.out.println("=> Utilisateur introuvable en base de données.");
+            log.warn("=> Utilisateur {} introuvable en base de données.", request.getIdentifier());
             throw new BadFormatAuthenticationException("Identifiant ou mot de passe incorrect");
         }
 
-        System.out.println("=> Utilisateur trouvé !");
+        log.info("=> Utilisateur {} trouvé !", request.getIdentifier());
 
         // 3. Vérifier le mot de passe
         boolean isPasswordValid = passwordEncoder.matches(request.getPassword(), user.getPassword());
