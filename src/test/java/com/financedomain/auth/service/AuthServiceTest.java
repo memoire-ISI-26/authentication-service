@@ -136,8 +136,11 @@ class AuthServiceTest {
     @Test
     @DisplayName("Devrait lever BadFormatAuthenticationException si la requête ou ses champs sont nuls")
     void shouldThrowExceptionWhenRequestOrFieldsNull() {
+        LoginRequest nullIdentifierRequest = new LoginRequest(null, "pass");
+        LoginRequest nullPasswordRequest = new LoginRequest("user", null);
+
         assertThrows(BadFormatAuthenticationException.class, () -> authService.login(null));
-        assertThrows(BadFormatAuthenticationException.class, () -> authService.login(new LoginRequest(null, "pass")));
-        assertThrows(BadFormatAuthenticationException.class, () -> authService.login(new LoginRequest("user", null)));
+        assertThrows(BadFormatAuthenticationException.class, () -> authService.login(nullIdentifierRequest));
+        assertThrows(BadFormatAuthenticationException.class, () -> authService.login(nullPasswordRequest));
     }
 }
