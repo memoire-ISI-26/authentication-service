@@ -1,5 +1,6 @@
 package com.financedomain.auth.config;
 
+import com.financedomain.auth.exception.NullAuthentificationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +22,7 @@ public class SecurityConfig {
      */
     @Bean
     @SuppressWarnings({"java:S4502", "sonar:S4502"})
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws NullAuthentificationException {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
