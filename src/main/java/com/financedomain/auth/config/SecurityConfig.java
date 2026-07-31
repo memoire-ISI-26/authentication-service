@@ -14,7 +14,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Configuration de la chaîne de filtres de sécurité.
+     * La protection CSRF est désactivée en toute sécurité ici car l'API est entièrement STATELESS
+     * et utilise des tokens JWT transmis via les entêtes HTTP (Bearer), rendant les attaques CSRF impossibles.
+     */
     @Bean
+    @SuppressWarnings({"java:S4502", "sonar:S4502"})
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
