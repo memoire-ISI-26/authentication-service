@@ -6,7 +6,6 @@ import com.financedomain.auth.exception.BadFormatAuthenticationException;
 import com.financedomain.auth.exception.NullAuthentificationException;
 import com.financedomain.auth.service.AuthService;
 import com.financedomain.auth.service.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
+
+    public AuthController(AuthService authService, JwtService jwtService) {
+        this.authService = authService;
+        this.jwtService = jwtService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest request) {

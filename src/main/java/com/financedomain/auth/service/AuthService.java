@@ -7,7 +7,6 @@ import com.financedomain.auth.proxy.UserProxy;
 import com.financedomain.auth.dto.UserDto;
 import com.financedomain.auth.proxy.TrackingProxy;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +14,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    @Autowired
-    private UserProxy userProxy;
+    private final UserProxy userProxy;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private TrackingProxy trackingProxy;
+    private final TrackingProxy trackingProxy;
+
+    public AuthService(UserProxy userProxy, JwtService jwtService, PasswordEncoder passwordEncoder, TrackingProxy trackingProxy) {
+        this.userProxy = userProxy;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.trackingProxy = trackingProxy;
+    }
 
     public LoginResponse login(LoginRequest request) {
         if (request == null || request.getIdentifier() == null || request.getPassword() == null) {
